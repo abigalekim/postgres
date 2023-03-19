@@ -1,30 +1,27 @@
 #include "postgres.h"
+
+#include "catalog/objectaccess.h"
+#include "commands/explain.h"
+#include "commands/user.h"
+#include "executor/execdesc.h"
+#include "executor/executor.h"
 #include "fmgr.h"
-#include "utils/builtins.h"
-#include "execdesc.h"
+#include "libpq/auth.h"
 #include "libpq/crypt.h"
 #include "libpq/libpq-be.h"
-#include "objectaccess.h"
-#include "explain.h"
-#include "pathnodes.h"
-#include "selfuncs.h"
-#include "queryjumble.h"
-#include "tcop/utility.h"
-#include "ipc.h"
 #include "miscadmin.h"
-#include "user.h"
-#include "auth.h"
-#include "executor.h"
-#include "objectaccess.h"
-#include "rowsecurity.h"
-#include "explain.h"
-#include "lsyscache.h"
+#include "nodes/pathnodes.h"
+#include "nodes/queryjumble.h"
 #include "optimizer/paths.h"
-#include "plancat.h"
-#include "selfuncs.h"
-#include "planner.h"
-#include "analyze.h"
-
+#include "optimizer/plancat.h"
+#include "optimizer/planner.h"
+#include "parser/analyze.h"
+#include "rewrite/rowsecurity.h"
+#include "storage/ipc.h"
+#include "tcop/utility.h"
+#include "utils/builtins.h"
+#include "utils/lsyscache.h"
+#include "utils/selfuncs.h"
 
 PG_MODULE_MAGIC;
 
@@ -263,6 +260,7 @@ static void order_hook_ProcessUtility_hook(PlannedStmt *pstmt,
 		dest, qc);
 }
 
+/* how to handle these?
 static Node* order_hook_CoerceParamHook(ParseState *pstate, Param *param,
 								  Oid targetTypeId, int32 targetTypeMod,
 								  int location) {
@@ -271,7 +269,6 @@ static Node* order_hook_CoerceParamHook(ParseState *pstate, Param *param,
    return NULL;
 }
 
-/* how to handle these?
 static void order_hook_ParamCompileHook(ParamListInfo params, struct Param *param,
                                         struct ExprState *state,
                                         Datum *resv, bool *resnull) {
@@ -289,7 +286,7 @@ static void order_hook_ParserSetupHook(struct ParseState *pstate, void *arg) {
     (void)pstate; (void)arg;
     elog(LOG, "ParserSetupHook called");
 }
-} */
+} 
 
 static Node* order_hook_ParseParamRefHook (ParseState *pstate, ParamRef *pref) {
     (void)pstate; (void)pref;
@@ -307,7 +304,7 @@ static Node* order_hook_PreParseColumnRefHook(ParseState *pstate, ColumnRef *cre
     (void)pstate; (void)cref;
     elog(LOG, "PreParseColumnRefHook called");
     return NULL;
-}
+} */
 
 
 void _PG_init(void) {
